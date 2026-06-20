@@ -164,7 +164,8 @@ installScript()
 		## WARNING!! UGLY PATCH, WORK IN PROGRESS
 		if [ "$script_name" == "synth-shell-greeter" ]; then
 			printInfo "Installing as $script"
-			"${dir}/synth-shell/synth-shell-greeter/setup.sh" "$script" "$CONFIG_DIR"
+			# I removed this, I dont like it
+			#"${dir}/synth-shell/synth-shell-greeter/setup.sh" "$script" "$CONFIG_DIR"
 
 		elif [ "$script_name" == "synth-shell-prompt" ]; then
 			printInfo "Installing as $script"
