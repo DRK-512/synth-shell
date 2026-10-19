@@ -2,7 +2,7 @@
 
 ##  +-----------------------------------+-----------------------------------+
 ##  |                                                                       |
-##  | Copyright (c) 2019-2021, Andres Gongora <mail@andresgongora.com>.     |
+##  | Copyright (c) 2019-2026, Andres Gongora <mail@andresgongora.com>.     |
 ##  |                                                                       |
 ##  | This program is free software: you can redistribute it and/or modify  |
 ##  | it under the terms of the GNU General Public License as published by  |
@@ -15,7 +15,7 @@
 ##  | GNU General Public License for more details.                          |
 ##  |                                                                       |
 ##  | You should have received a copy of the GNU General Public License     |
-##  | along with this program. If not, see <http://www.gnu.org/licenses/>.  |
+##  | along with this program. If not, see <https://www.gnu.org/licenses/>. |
 ##  |                                                                       |
 ##  +-----------------------------------------------------------------------+
 
@@ -28,7 +28,7 @@
 ##==============================================================================
 ##	DEPENDENCIES
 ##==============================================================================
-[ "$(type -t include)" != 'function' ]&&{ include(){ { [ -z "$_IR" ]&&_IR="$PWD"&&cd $(dirname "${BASH_SOURCE[0]}")&&include "$1"&&cd "$_IR"&&unset _IR;}||{ local d=$PWD&&cd "$(dirname "$PWD/$1")"&&. "$(basename "$1")"&&cd "$d";}||{ echo "Include failed $PWD->$1"&&exit 1;};};}
+[ "$(type -t include)" != 'function' ]&&{ include(){ { [ -z "$_IR" ]&&_IR="$PWD"&&cd "$(dirname "${BASH_SOURCE[0]}")"&&include "$1"&&cd "$_IR"&&unset _IR;}||{ local d="$PWD"&&cd "$(dirname "$PWD/$1")"&&. "$(basename "$1")"&&cd "$d";}||{ echo "Include failed $PWD->$1"&&exit 1;};};}
 
 include 'bash-tools/bash-tools/user_io.sh'
 include 'bash-tools/bash-tools/shell.sh'
@@ -49,7 +49,7 @@ include 'bash-tools/bash-tools/shell.sh'
 ##	This function installs a generic script to the system. It copies the
 ##	script to INSTALL_DIR, and also adds to it all the dependencies from
 ##	common to make the script completely self contained. Also, this
-##	function copies all configuration files to CONFIG_DIR
+##	function copies all configuration files to CONFIG_DIR.
 ##
 ##	ARGUMENTS
 ##	1. Name of script. (e.g. "status" or "fancy-bash-prompt")
@@ -85,8 +85,8 @@ installScript()
 	"\n"\
 	"##-----------------------------------------------------\n"\
 	"## ${script_name}\n"\
-	"if [ -f ${script} ] && [ -n \"\$( echo \$- | grep i )\" ]; then\n"\
-	"\tsource ${script}\n"\
+	"if [ -f \"${script}\" ] && [ -n \"\$( echo \$- | grep i )\" ]; then\n"\
+	"\tsource \"${script}\"\n"\
 	"fi")
 
 
@@ -96,7 +96,7 @@ installScript()
 	"\n"\
 	"##  +-----------------------------------+-----------------------------------+\n"\
 	"##  |                                                                       |\n"\
-	"##  | Copyright (c) 2014-2021, https://github.com/andresgongora/synth-shell |\n"\
+	"##  | Copyright (c) 2014-2026, https://github.com/andresgongora/synth-shell |\n"\
 	"##  | Visit the above URL for details of license and authorship.            |\n"\
 	"##  |                                                                       |\n"\
 	"##  | This program is free software: you can redistribute it and/or modify  |\n"\
@@ -110,7 +110,7 @@ installScript()
 	"##  | GNU General Public License for more details.                          |\n"\
 	"##  |                                                                       |\n"\
 	"##  | You should have received a copy of the GNU General Public License     |\n"\
-	"##  | along with this program. If not, see <http://www.gnu.org/licenses/>.  |\n"\
+	"##  | along with this program. If not, see <https://www.gnu.org/licenses/>. |\n"\
 	"##  |                                                                       |\n"\
 	"##  +-----------------------------------------------------------------------+\n"\
 	"##\n"\
@@ -174,7 +174,7 @@ installScript()
 
 		else
 			## ADD CONTENT TO SCRIPT FILE
-			## - Add common scripts TODO: Make this configurable
+			## - Add common scripts. TODO: Make this configurable.
 			## - Add actual script
 			## - Remove common functions from environment
 			cat "${dir}/bash-tools/bash-tools/load_config.sh" |\
@@ -193,13 +193,13 @@ installScript()
 
 
 			## COPY CONFIGURATION FILES
-			## - Check if script has config file at all. If so:
-			##   - Create system config folder if there is none
+			## - Check whether the script has a config file. If so:
+			##   - Create the system config folder if none exists
 			##   - Check if there is already some configuration in place
 			##     - If none, copy current configuration
 			##     - If there is, but different, copy with .new extension
-			##   - If example folder exists
-			##     - Copy all examples files (overwrite old examples)
+			##   - If an example folder exists
+			##     - Copy all example files (overwrite old examples)
 			local sys_conf_file="${CONFIG_DIR}/${script_name}.config"
 			local conf_example_dir="${config_template_dir}/${script_name}.config.examples"
 			local conf_template="${config_template_dir}/${script_name}.config"
@@ -248,7 +248,7 @@ installScript()
 
 
 
-		printSuccess "Script $script_name succesfully installed"
+		printSuccess "Script $script_name successfully installed"
 
 
 
@@ -394,9 +394,9 @@ installerUser()
 ##
 ##	PROMPT USER FOR INSTALLATION OPTIONS
 ##
-##	USER INSTALL ONLY:	Will all code to user's home dir
-##	                  	and add hooks to its own bashrc file.
-##	SYSTEM WIDE INSTALL:	Will add code to system and hooks to
+##	USER INSTALL ONLY:	Will add all code to the user's home directory
+##	                  	and add hooks to the user's own bashrc file.
+##	SYSTEM-WIDE INSTALL:	Will add code to the system and hooks to
 ##	                    	/etc/bash.bashrc file.
 ##
 installer()
@@ -421,4 +421,6 @@ installer()
 	fi
 }
 
-installer "$@"
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+	installer "$@"
+fi

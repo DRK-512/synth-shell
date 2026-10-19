@@ -2,7 +2,7 @@
 
 ##  +-----------------------------------+-----------------------------------+
 ##  |                                                                       |
-##  | Copyright (c) 2020, Andres Gongora <mail@andresgongora.com>.          |
+##  | Copyright (c) 2020-2026, Andres Gongora <mail@andresgongora.com>.     |
 ##  |                                                                       |
 ##  | This program is free software: you can redistribute it and/or modify  |
 ##  | it under the terms of the GNU General Public License as published by  |
@@ -15,7 +15,7 @@
 ##  | GNU General Public License for more details.                          |
 ##  |                                                                       |
 ##  | You should have received a copy of the GNU General Public License     |
-##  | along with this program. If not, see <http://www.gnu.org/licenses/>.  |
+##  | along with this program. If not, see <https://www.gnu.org/licenses/>. |
 ##  |                                                                       |
 ##  +-----------------------------------------------------------------------+
 
@@ -61,7 +61,7 @@ better_cd()
 	local submenu_sel_key=""
 	print_submenu()
 	{
-		## Todo: comprobnar que options no está vacio
+		## TODO: Check that options are not empty
 
 
 		local dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -102,8 +102,8 @@ better_cd()
 		local loop=true
 		while $loop; do
 
-			## PRINT OPTIONS AND HIGHLIGH USER SELECTION
-			for i in ${!options_array[@]}; do
+			## PRINT OPTIONS AND HIGHLIGHT USER SELECTION
+			for i in "${!options_array[@]}"; do
 				if [[ $index == $i ]]; then
 					printf "${text_format}${options_array[$i]}${no_color}\n"
 				else
@@ -146,7 +146,7 @@ better_cd()
 
 
 
-	## IF NO ARGUMENTS PASSED -> run better cd version on current folder
+	## IF NO ARGUMENTS ARE PASSED -> run better cd version on current folder
 	if [ $# -eq 0 ]; then
 		# USER SELECTION
 		local dir_base="$PWD/"
@@ -158,14 +158,14 @@ better_cd()
 
 			readarray -t dir_array <<< "$dirs" ## Split array
 
-			for i in ${!dir_array[@]}; do
+			for i in "${!dir_array[@]}"; do
 				dir_array[$i]="${dir_base}${dir_array[$i]}"
 			done
 
 			print_submenu "${dir_array[@]}"
 
 			if [ $submenu_sel_key == "enter" ]; then
-				"cd" ${dir_array[$submenu_sel_index]}
+				"cd" "${dir_array[$submenu_sel_index]}"
 				break
 
 			elif [ $submenu_sel_key == "right" ]; then
@@ -177,7 +177,7 @@ better_cd()
 		done
 
 	else
-		"cd" $@
+		"cd" "$@"
 	fi
 }
 
@@ -186,4 +186,3 @@ alias cd='better_cd'
 
 
 ### EOF ###
-
